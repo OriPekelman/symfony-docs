@@ -43,12 +43,12 @@ configuration files`_).
 
     # The relationships of the application with services or other applications.
     # The left-hand side is the name of the relationship as it will be exposed
-    # to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
-    # side is in the form `<service name>:<endpoint name>`.
+    # to the application in the PLATFORM_RELATIONSHIPS environment  variable. 
+    # The right-hand side is in the form `<service name>:<endpoint name>`.
     relationships:
         database: "mysql:mysql"
 
-    # The configuration of app when it is exposed to the web.
+    # The configuration of the app when it is exposed on the web.
     web:
         # The public directory of the app, relative to its root.
         document_root: "/web"
@@ -59,6 +59,8 @@ configuration files`_).
     disk: 2048
 
     # The mounts that will be performed when the package is deployed.
+    # These will be read/write the rest of the file system is read
+    # only
     mounts:
         "/app/cache": "shared:files/cache"
         "/app/logs": "shared:files/logs"
@@ -78,7 +80,7 @@ configuration files`_).
     #        spec: "*/20 * * * *"
     #        cmd: "php cron.php example:test"
 
-For best practices, you should also add a ``.platform`` folder at the root of
+Not required but a good practice is to add a ``.platform`` folder at the root of
 your Git repository which contains the following files:
 
 .. code-block:: yaml
@@ -129,7 +131,8 @@ following file:
     # Hack.
     ini_set('session.save_path', '/tmp/sessions');
 
-Make sure this file is listed in your *imports*:
+You should modify your configuration file (at app/config/config.yml) and import 
+app/config/parameters_platform.php  thusly.. in the *imports* section:
 
 .. code-block:: yaml
 
@@ -140,8 +143,8 @@ Make sure this file is listed in your *imports*:
 Deploy your Application
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Now you need to add a remote to Platform.sh in your Git repository (copy the 
-command that you see on the Platform.sh web UI):
+Now all you need to do is add a remote to Platform.sh in your Git repository (copy
+the command that you see on the Platform.sh web UI):
 
 .. code-block:: bash
 
